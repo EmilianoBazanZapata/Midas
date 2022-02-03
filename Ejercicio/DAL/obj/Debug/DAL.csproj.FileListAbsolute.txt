@@ -3,3 +3,4 @@ C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\DAL\bin\Debug\DAL.pdb
 C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\DAL\obj\Debug\DAL.csproj.CoreCompileInputs.cache
 C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\DAL\obj\Debug\DAL.dll
 C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\DAL\obj\Debug\DAL.pdb
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\DAL\obj\Debug\DAL.csproj.AssemblyReference.cache

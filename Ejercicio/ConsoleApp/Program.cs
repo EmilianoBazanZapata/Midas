@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.IO;
-
+using BLL;
+using DAL.DTO;
 namespace ConsoleApp
 {
     class Program
@@ -14,9 +15,9 @@ namespace ConsoleApp
             Dictionary<string, string> dbParamsMap = new Dictionary<string, string>();
             dbParamsMap.Add("logFileFolder", @"C:\Temp");
 
-            //logger = new Logger(true, true, true, false, true, true, dbParamsMap);
+            logger = new Logger(true, true, true, false, true, true, dbParamsMap);
 
-            //logger.LogMessage("Log message text", true, false, true);
+            logger.LogMessage("Log message text", true, false, true);
             Console.ReadKey();
         }
     }
@@ -61,6 +62,8 @@ namespace ConsoleApp
             }
 
             //string connectionString = "Data Source=" + dbParams["serverName"] + "; Initial Catalog=" + dbParams["DataBaseName"] + "; User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
+            //string connectionString = @"Data Source=DESKTOP-5KJPFCB\SQLEXPRESS;Initial Catalog=Midas;Integrated Security=True";
+            //SqlConnection sqlConnection = new SqlConnection(connectionString);
             string connectionString = @"Data Source=DESKTOP-5KJPFCB\SQLEXPRESS;Initial Catalog=Midas;Integrated Security=True";
             SqlConnection sqlConnection = new SqlConnection(connectionString);
 
@@ -145,10 +148,14 @@ namespace ConsoleApp
             if (logToDatabase)
             {
                 //string insertStatement = "insert into Log_Values('" + messageText + "', " + t.ToString() + ")";
-                string insertStatement = "INSERT INTO [dbo].[Log_Values]([messageText],[datamessage])VALUES('" + messageText + "', '" + t + "')";
-                SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
-                sqlConnection.Open();
-                sqlCommand.ExecuteNonQuery();
+                //string insertStatement = "INSERT INTO [dbo].[Log_Values]([messageText],[datamessage])VALUES('" + messageText + "', '" + t + "')";
+                //SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
+                //sqlConnection.Open();
+                //sqlCommand.ExecuteNonQuery();
+                var dto = new LogDTO();
+                dto.MessageText = messageText;
+                dto.DataMessage = t.ToString();
+                LogBLL.CreateLogValue(dto);
             }
             //}
             //catch (Exception)
