@@ -20,3 +20,11 @@ C:\Users\Emiliano\Downloads\Ejercicio\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.
 C:\Users\Emiliano\Downloads\Ejercicio\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.csproj.CoreCompileInputs.cache
 C:\Users\Emiliano\Downloads\Ejercicio\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.exe
 C:\Users\Emiliano\Downloads\Ejercicio\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.pdb
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\bin\Debug\ConsoleApp.exe.config
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\bin\Debug\ConsoleApp.exe
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\bin\Debug\ConsoleApp.pdb
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.csproj.AssemblyReference.cache
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.csproj.SuggestedBindingRedirects.cache
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.csproj.CoreCompileInputs.cache
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.exe
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.pdb
