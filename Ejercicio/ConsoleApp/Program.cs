@@ -14,9 +14,9 @@ namespace ConsoleApp
             Dictionary<string, string> dbParamsMap = new Dictionary<string, string>();
             dbParamsMap.Add("logFileFolder", @"C:\Temp");
 
-            logger = new Logger(true, true, true, true, true, true, dbParamsMap);
+            //logger = new Logger(true, true, true, false, true, true, dbParamsMap);
 
-            logger.LogMessage("Log message text", true, false, false);
+            //logger.LogMessage("Log message text", true, false, true);
             Console.ReadKey();
         }
     }
@@ -44,114 +44,118 @@ namespace ConsoleApp
 
         public void LogMessage(string messageText, bool message, bool warning, bool error)
         {
-            try
+            //try
+            //{
+            messageText.Trim();
+            if (messageText == null || messageText.Length == 0)
             {
-                messageText.Trim();
-                if (messageText == null || messageText.Length == 0)
-                {
-                    return;
-                }
-                if (!logToConsole && !logToFile && !logToDatabase)
-                {
-                    throw new Exception("Invalid configuration");
-                }
-                if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
-                {
-                    throw new Exception("Error or Warning or Message must be specified");
-                }
+                return;
+            }
+            if (!logToConsole && !logToFile && !logToDatabase)
+            {
+                throw new Exception("Invalid configuration");
+            }
+            if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
+            {
+                throw new Exception("Error or Warning or Message must be specified");
+            }
 
-                //string connectionString = "Data Source=" + dbParams["serverName"] + "; InitialCatalog=" + dbParams["DataBaseName"] + "; UserID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
-                string connectionString = @"Data Source=DESKTOP-5KJPFCB\SQLEXPRESS;Initial Catalog=Midas;Integrated Security=True";
-                SqlConnection sqlConnection = new SqlConnection(connectionString);
+            //string connectionString = "Data Source=" + dbParams["serverName"] + "; Initial Catalog=" + dbParams["DataBaseName"] + "; User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
+            string connectionString = @"Data Source=DESKTOP-5KJPFCB\SQLEXPRESS;Initial Catalog=Midas;Integrated Security=True";
+            SqlConnection sqlConnection = new SqlConnection(connectionString);
 
-                int t = 0;
-                if (message && logMessage)
-                {
-                    t = 1;
-                }
+            //int t = 0;
+            string t = "";
+            if (message && logMessage)
+            {
+                //t = 1;
+                t = "compilacion exitosa";
+            }
 
-                if (error && logError)
-                {
-                    t = 2;
-                }
+            if (error && logError)
+            {
+                //t = 2;
+                t = "compilacion fallida";
+            }
 
-                if (warning && logWarning)
-                {
-                    t = 3;
-                }
+            if (warning && logWarning)
+            {
+                //t = 3;
+                t = "compilacion con advertencias";
+            }
 
-                string l = string.Empty;
-                bool exists = File.Exists(dbParams["logFileFolder"] + "/logFile.txt");
-                StreamWriter file = null;
-                if (!exists)
+            string l = string.Empty;
+            bool exists = File.Exists(dbParams["logFileFolder"] + "/logFile.txt");
+            StreamWriter file = null;
+            if (!exists)
+            {
+                file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
+            }
+
+            if (error && logError)
+            {
+                l = l + "error " + DateTime.Now + " " + messageText;
+            }
+
+            if (warning && logWarning)
+            {
+                l = l + "warning " + DateTime.Now + " " + messageText;
+            }
+
+            if (message && logMessage)
+            {
+                l = l + "message " + DateTime.Now + " " + messageText;
+            }
+
+            if (logToFile)
+            {
+                if (file == null)
                 {
                     file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
                 }
 
-                if (error && logError)
-                {
-                    l = l + "error " + DateTime.Now + " " + messageText;
-                }
-
-                if (warning && logWarning)
-                {
-                    l = l + "warning " + DateTime.Now + " " + messageText;
-                }
-
-                if (message && logMessage)
-                {
-                    l = l + "message " + DateTime.Now + " " + messageText;
-                }
-
-                if (logToFile)
-                {
-                    if(file == null)
-                    {
-                        file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
-                    }
-
-                    file.WriteLine(l);
-                    file.Close();
-                }
-
-                if (logToConsole)
-                {
-                    if (message)
-                    {
-                        Console.BackgroundColor = ConsoleColor.DarkBlue;
-                        Console.WriteLine(l);
-                        Console.ResetColor();
-                    }
-
-                    if (warning)
-                    {
-                        Console.BackgroundColor = ConsoleColor.Yellow;
-                        Console.WriteLine(l);
-                        Console.ResetColor();
-                    }
-
-                    if (error)
-                    {
-                        Console.BackgroundColor = ConsoleColor.Red;
-                        Console.WriteLine(l);
-                        Console.ResetColor();
-                    }
-                }
-
-                if (logToDatabase)
-                {
-                    //string insertStatement = "insert into Log_Values('" + messageText + "', " + t.ToString() + ")";
-                    string insertStatement = "INSERT INTO [dbo].[Log_Values]([messageText],[datamessage])VALUES('" + messageText + "', " + t.ToString() + ")";
-                    SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
-                    sqlConnection.Open();
-                    sqlCommand.ExecuteNonQuery();
-                }
+                file.WriteLine(l);
+                file.Close();
             }
-            catch (Exception)
+
+            if (logToConsole)
             {
+                if (message)
+                {
+                    Console.BackgroundColor = ConsoleColor.DarkBlue;
+                    Console.WriteLine(l);
+                    Console.ResetColor();
+                }
 
-                throw;
+                if (warning)
+                {
+                    Console.BackgroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine(l);
+                    Console.ResetColor();
+                }
+
+                if (error)
+                {
+                    Console.BackgroundColor = ConsoleColor.Red;
+                    Console.WriteLine(l);
+                    Console.ResetColor();
+                }
             }
+
+            if (logToDatabase)
+            {
+                //string insertStatement = "insert into Log_Values('" + messageText + "', " + t.ToString() + ")";
+                string insertStatement = "INSERT INTO [dbo].[Log_Values]([messageText],[datamessage])VALUES('" + messageText + "', '" + t + "')";
+                SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
+                sqlConnection.Open();
+                sqlCommand.ExecuteNonQuery();
+            }
+            //}
+            //catch (Exception)
+            //{
+
+            //    throw;
+            //}
         }
     }
 }

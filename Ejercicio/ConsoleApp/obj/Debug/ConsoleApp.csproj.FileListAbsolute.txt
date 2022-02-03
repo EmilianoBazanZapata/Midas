@@ -28,3 +28,8 @@ C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.
 C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.csproj.CoreCompileInputs.cache
 C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.exe
 C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.pdb
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\bin\Debug\BLL.dll
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\bin\Debug\DAL.dll
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\bin\Debug\BLL.pdb
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\bin\Debug\DAL.pdb
+C:\Users\Emiliano\Desktop\Midas\Midas\Ejercicio\ConsoleApp\obj\Debug\ConsoleApp.csproj.CopyComplete
