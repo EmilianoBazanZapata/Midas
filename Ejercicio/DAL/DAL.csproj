@@ -41,8 +41,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DAO\LogDAO.cs" />
-    <Compile Include="DTO\LogDTO.cs" />
+    <Compile Include="DAO\ConsoleLogDAO.cs" />
+    <Compile Include="DAO\FileLogDAO.cs" />
+    <Compile Include="DAO\SqlLogDAO.cs" />
+    <Compile Include="DTO\LogConsoleTypeDTO.cs" />
+    <Compile Include="DTO\LogMessageDTO.cs" />
+    <Compile Include="DTO\LoggerTypeDTO.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup />

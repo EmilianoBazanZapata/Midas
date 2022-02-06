@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace DAL.DTO
 {
-    public class LogDTO
+    public class LogMessageDTO
     {
         public string MessageText { get; set; }
-        public string DataMessage { get; set; }
     }
 }

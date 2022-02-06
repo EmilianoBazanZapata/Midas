@@ -1,168 +1,113 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Data.SqlClient;
-using System.IO;
 using BLL;
+using ConsoleApp.Entities;
 using DAL.DTO;
 namespace ConsoleApp
 {
     class Program
     {
-        private static Logger logger;
+        #region
+        static string messageTetx = "";
+        static int OptionAvalible = 0;
+        static int TypeAvalible = 0;
+        static bool message = false;
+        static bool error = false;
+        static bool warning = false;
+        static LogConsoleTypeDTO LogConsoleTypeDTO = new LogConsoleTypeDTO();
+        static LoggerTypeDTO LoggerTypeDTO = new LoggerTypeDTO();
+        static LogMessageDTO LogMessageDTO = new LogMessageDTO();
+        #endregion
         static void Main(string[] args)
         {
             Dictionary<string, string> dbParamsMap = new Dictionary<string, string>();
             dbParamsMap.Add("logFileFolder", @"C:\Temp");
 
-            logger = new Logger(true, true, true, false, true, true, dbParamsMap);
+            // Ask the user to message
+            Console.WriteLine("Please, Add a Message");
+            messageTetx = Console.ReadLine();
 
-            logger.LogMessage("Log message text", true, false, true);
+            // Ask the user to what gets logged
+            Console.WriteLine("Please... Select a option avalible : 1,2 or 3");
+            Console.WriteLine("1: Add Message");
+            Console.WriteLine("2: Add Warning ");
+            Console.WriteLine("3: Add Error");
+            #region
+            try
+            {
+                OptionAvalible = Convert.ToInt32(Console.ReadLine());
+                switch (OptionAvalible)
+                {
+                    case 1:
+                        message = true;
+                        error = false;
+                        warning = false;
+                        break;
+                    case 2:
+                        message = false;
+                        error = true;
+                        warning = false;
+                        break;
+                    case 3:
+                        message = false;
+                        error = false;
+                        warning = true;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            #endregion
+            // Ask the user how to register.
+            Console.WriteLine("Please... Select an option to record the available message: 1,2 or 3");
+            Console.WriteLine("1: with .txt");
+            Console.WriteLine("2: with Console ");
+            Console.WriteLine("3: with  SQL Server");
+            #region
+            try
+            {
+                TypeAvalible = Convert.ToInt32(Console.ReadLine());
+                switch (TypeAvalible)
+                {
+                    case 1:
+                        LoggerTypeDTO.logToFile = true;
+                        LoggerTypeDTO.logToConsole = false;
+                        LoggerTypeDTO.logToDatabase = false;
+                        break;
+                    case 2:
+                        LoggerTypeDTO.logToFile = false;
+                        LoggerTypeDTO.logToConsole = true;
+                        LoggerTypeDTO.logToDatabase = false;
+                        break;
+                    case 3:
+                        LoggerTypeDTO.logToFile = false;
+                        LoggerTypeDTO.logToConsole = false;
+                        LoggerTypeDTO.logToDatabase = true;
+                        break;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+            #endregion
+
+            LoggerTypeDTO.logMessage = message;
+            LoggerTypeDTO.logWarning = warning;
+            LoggerTypeDTO.logError = error;
+            LoggerTypeDTO.dbParams = dbParamsMap;
+            LogMessageDTO.MessageText = messageTetx;
+            LogConsoleTypeDTO.Message = message;
+            LogConsoleTypeDTO.Error = error;
+            LogConsoleTypeDTO.Warning = warning;
+
+            LogMessageBLL.ParamsLogMessage(messageTetx, message, error, warning, LoggerTypeDTO);
+            LoggerService lg = new LoggerService();
+            lg.LogService(LoggerTypeDTO, LogMessageDTO, LogConsoleTypeDTO, dbParamsMap);
             Console.ReadKey();
-        }
-    }
-
-    class Logger
-    {
-        private static bool logToFile;
-        private static bool logToConsole;
-        private static bool logMessage;
-        private static bool logWarning;
-        private static bool logError;
-        private static bool logToDatabase;
-        private static IDictionary dbParams;
-
-        public Logger(bool logToFileParam, bool logToConsoleParam, bool logToDatabaseParam, bool logMessageParam, bool logWarningParam, bool logErrorParam, IDictionary dbParamsMap)
-        {
-            logError = logErrorParam;
-            logMessage = logMessageParam;
-            logWarning = logWarningParam;
-            logToDatabase = logToDatabaseParam;
-            logToFile = logToFileParam;
-            logToConsole = logToConsoleParam;
-            dbParams = dbParamsMap;
-        }
-
-        public void LogMessage(string messageText, bool message, bool warning, bool error)
-        {
-            //try
-            //{
-            messageText.Trim();
-            if (messageText == null || messageText.Length == 0)
-            {
-                return;
-            }
-            if (!logToConsole && !logToFile && !logToDatabase)
-            {
-                throw new Exception("Invalid configuration");
-            }
-            if ((!logError && !logMessage && !logWarning) || (!message && !warning && !error))
-            {
-                throw new Exception("Error or Warning or Message must be specified");
-            }
-
-            //string connectionString = "Data Source=" + dbParams["serverName"] + "; Initial Catalog=" + dbParams["DataBaseName"] + "; User ID=" + dbParams["userName"] + ";Password=" + dbParams["password"] + ";";
-            //string connectionString = @"Data Source=DESKTOP-5KJPFCB\SQLEXPRESS;Initial Catalog=Midas;Integrated Security=True";
-            //SqlConnection sqlConnection = new SqlConnection(connectionString);
-            string connectionString = @"Data Source=DESKTOP-5KJPFCB\SQLEXPRESS;Initial Catalog=Midas;Integrated Security=True";
-            SqlConnection sqlConnection = new SqlConnection(connectionString);
-
-            //int t = 0;
-            string t = "";
-            if (message && logMessage)
-            {
-                //t = 1;
-                t = "compilacion exitosa";
-            }
-
-            if (error && logError)
-            {
-                //t = 2;
-                t = "compilacion fallida";
-            }
-
-            if (warning && logWarning)
-            {
-                //t = 3;
-                t = "compilacion con advertencias";
-            }
-
-            string l = string.Empty;
-            bool exists = File.Exists(dbParams["logFileFolder"] + "/logFile.txt");
-            StreamWriter file = null;
-            if (!exists)
-            {
-                file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
-            }
-
-            if (error && logError)
-            {
-                l = l + "error " + DateTime.Now + " " + messageText;
-            }
-
-            if (warning && logWarning)
-            {
-                l = l + "warning " + DateTime.Now + " " + messageText;
-            }
-
-            if (message && logMessage)
-            {
-                l = l + "message " + DateTime.Now + " " + messageText;
-            }
-
-            if (logToFile)
-            {
-                if (file == null)
-                {
-                    file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
-                }
-
-                file.WriteLine(l);
-                file.Close();
-            }
-
-            if (logToConsole)
-            {
-                if (message)
-                {
-                    Console.BackgroundColor = ConsoleColor.DarkBlue;
-                    Console.WriteLine(l);
-                    Console.ResetColor();
-                }
-
-                if (warning)
-                {
-                    Console.BackgroundColor = ConsoleColor.Yellow;
-                    Console.WriteLine(l);
-                    Console.ResetColor();
-                }
-
-                if (error)
-                {
-                    Console.BackgroundColor = ConsoleColor.Red;
-                    Console.WriteLine(l);
-                    Console.ResetColor();
-                }
-            }
-
-            if (logToDatabase)
-            {
-                //string insertStatement = "insert into Log_Values('" + messageText + "', " + t.ToString() + ")";
-                //string insertStatement = "INSERT INTO [dbo].[Log_Values]([messageText],[datamessage])VALUES('" + messageText + "', '" + t + "')";
-                //SqlCommand sqlCommand = new SqlCommand(insertStatement, sqlConnection);
-                //sqlConnection.Open();
-                //sqlCommand.ExecuteNonQuery();
-                var dto = new LogDTO();
-                dto.MessageText = messageText;
-                dto.DataMessage = t.ToString();
-                LogBLL.CreateLogValue(dto);
-            }
-            //}
-            //catch (Exception)
-            //{
-
-            //    throw;
-            //}
         }
     }
 }
