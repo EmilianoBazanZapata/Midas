@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using DAL.DTO;
 using DAL.CLASS;
+using System;
 
 namespace DAL.DAO
 {
@@ -12,20 +13,29 @@ namespace DAL.DAO
                                          string l,
                                          LogConsoleTypeDTO dto)
         {
-            message = Message.MessageLog(l,dto); 
+            try
+            {
+                message = Message.MessageLog(l, dto);
 
-            bool exists = File.Exists(dbParams["logFileFolder"] + "/logFile.txt");
-            StreamWriter file = null;
-            if (!exists)
-            {
-                file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
+                bool exists = File.Exists(dbParams["logFileFolder"] + "/logFile.txt");
+                StreamWriter file = null;
+                if (!exists)
+                {
+                    file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
+                }
+                if (file == null)
+                {
+                    file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
+                }
+                file.WriteLine(message);
+                file.Close();
+                Console.WriteLine("Message Logged Into .txt File Successfully");
             }
-            if (file == null)
+            catch (Exception ex)
             {
-                file = File.CreateText(dbParams["logFileFolder"] + "/logFile.txt");
+
+                Console.WriteLine(ex.ToString());
             }
-            file.WriteLine(message);
-            file.Close();
         }
     }
 }

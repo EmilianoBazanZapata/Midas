@@ -44,7 +44,7 @@
     <Compile Include="LogConsoleBLL.cs" />
     <Compile Include="LogDataBaseBLL.cs" />
     <Compile Include="LogFileBLL.cs" />
-    <Compile Include="LogMessageBLL.cs" />
+    <Compile Include="ValidateMessageBLL.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

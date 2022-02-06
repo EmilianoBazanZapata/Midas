@@ -1,6 +1,5 @@
 ﻿using DAL.DTO;
 using System;
-using System.IO;
 namespace BLL
 {
     public class ValidateMessageBLL

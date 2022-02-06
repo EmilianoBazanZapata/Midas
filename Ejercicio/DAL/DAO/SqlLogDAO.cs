@@ -43,11 +43,12 @@ namespace DAL.DAO
                     MyReader.Close();
                     sqlConnection.Close();
                 }
+                Console.WriteLine("Message Registered In Database Successfully");
             }
             catch (Exception ex)
             {
 
-                throw ex;
+                Console.WriteLine(ex.ToString()); ;
             }
         }
     }
