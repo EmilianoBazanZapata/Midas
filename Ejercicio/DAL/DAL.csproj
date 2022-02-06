@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CLASS\Message.cs" />
     <Compile Include="DAO\ConsoleLogDAO.cs" />
     <Compile Include="DAO\FileLogDAO.cs" />
     <Compile Include="DAO\SqlLogDAO.cs" />

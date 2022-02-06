@@ -104,7 +104,7 @@ namespace ConsoleApp
             LogConsoleTypeDTO.Error = error;
             LogConsoleTypeDTO.Warning = warning;
 
-            LogMessageBLL.ParamsLogMessage(messageTetx, message, error, warning, LoggerTypeDTO);
+            ValidateMessageBLL.ParamsLogMessage(messageTetx, message, error, warning, LoggerTypeDTO);
             LoggerService lg = new LoggerService();
             lg.LogService(LoggerTypeDTO, LogMessageDTO, LogConsoleTypeDTO, dbParamsMap);
             Console.ReadKey();

@@ -3,7 +3,7 @@ using System;
 using System.IO;
 namespace BLL
 {
-    public class LogMessageBLL
+    public class ValidateMessageBLL
     {
         public static void ParamsLogMessage(string messageText, bool message, bool error, bool warning, LoggerTypeDTO dto)
         {
