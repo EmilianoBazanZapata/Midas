@@ -9,7 +9,8 @@ namespace ConsoleApp.Entities
         public void LogService(LoggerTypeDTO dto,
                                LogMessageDTO messageDTO,
                                LogConsoleTypeDTO logConsoleTypeDTO,
-                               Dictionary<string, string> dbParamsMap)
+                               Dictionary<string, string> dbParamsMap,
+                               BDConnectionStringDTO BD)
         {
             if (dto.logToFile)
             {
@@ -23,7 +24,7 @@ namespace ConsoleApp.Entities
             {
                 var dtoLog = new LogMessageDTO();
                 dtoLog.MessageText = messageDTO.MessageText;
-                LogDataBaseBLL.CreateLogValue(dtoLog, logConsoleTypeDTO);
+                LogDataBaseBLL.CreateLogValue(dtoLog, logConsoleTypeDTO,BD);
             }
         }
     }

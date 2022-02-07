@@ -5,9 +5,9 @@ namespace BLL
 {
     public class LogDataBaseBLL
     {
-        public static void CreateLogValue(LogMessageDTO dto, LogConsoleTypeDTO logConsoleTypeDTO)
+        public static void CreateLogValue(LogMessageDTO dto, LogConsoleTypeDTO logConsoleTypeDTO,BDConnectionStringDTO BD)
         {
-           SqlLogDAO.CreateLogValue(dto, logConsoleTypeDTO);  
+           SqlLogDAO.CreateLogValue(dto, logConsoleTypeDTO,BD);  
         }
     }
 }

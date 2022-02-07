@@ -1,4 +1,6 @@
-﻿using DAL.DTO;
+﻿using DAL.CLASS;
+using DAL.DATABASE;
+using DAL.DTO;
 using System;
 using System.Data;
 using System.Data.SqlClient;
@@ -7,8 +9,11 @@ namespace DAL.DAO
 {
     public class SqlLogDAO
     {
-        public static void CreateLogValue(LogMessageDTO dto, LogConsoleTypeDTO logConsoleTypeDTO)
+        public static void CreateLogValue(LogMessageDTO dto, 
+                                          LogConsoleTypeDTO logConsoleTypeDTO,
+                                          BDConnectionStringDTO BD)
         {
+            string connectionString = @"Data Source="+BD.Server+";Initial Catalog="+BD.DataBasename+";User ID="+BD.UserName+";Password="+BD.Password+"";
             int t = 0;
             if (logConsoleTypeDTO.Message)
             {
@@ -26,7 +31,6 @@ namespace DAL.DAO
             }
             try
             {
-                string connectionString = @"Data Source=DESKTOP-5KJPFCB\SQLEXPRESS;Initial Catalog=Midas;Integrated Security=True";
                 SqlConnection sqlConnection = new SqlConnection(connectionString);
                 sqlConnection.Open();
                 string Consulta = @"EXEC UP_AGREGAR_LOG @MESSAGETEXT , @DATAMESSAGE";
@@ -46,9 +50,23 @@ namespace DAL.DAO
                 Console.WriteLine("Message Registered In Database Successfully");
             }
             catch (Exception ex)
-            {
+            {  
+                Console.WriteLine("The Database does not exist, then it will be xcreated so you can try again");
+                try
+                {
+                    DataBaseContent db = new DataBaseContent();
+                    StoredProcedures up = new StoredProcedures();
+                    TablesDataBase tbl = new TablesDataBase();
+                    db.CreateDataBase(BD);
+                    tbl.CreateTable(BD);
+                    up.CreateStoreProcedure(BD);
 
-                Console.WriteLine(ex.ToString()); ;
+                }
+                catch (Exception ex1)
+                {
+                    Console.WriteLine("Database was successfully created");
+                    Console.WriteLine(ex1.ToString());
+                }
             }
         }
     }

@@ -9,7 +9,7 @@ namespace DAL.DAO
     public class FileLogDAO
     {
         public static string message = "";
-        public static void SaveLogInFile(Dictionary<string, string> dbParams, 
+        public static void SaveLogInFile(Dictionary<string, string> dbParams,
                                          string l,
                                          LogConsoleTypeDTO dto)
         {
@@ -31,10 +31,21 @@ namespace DAL.DAO
                 file.Close();
                 Console.WriteLine("Message Logged Into .txt File Successfully");
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
-                Console.WriteLine(ex.ToString());
+                Console.WriteLine("the folder is not created in the directory, it will be created next, so please try again");
+                try
+                {
+                    string folderPath = dbParams["logFileFolder"];
+                    if (!Directory.Exists(folderPath))
+                    {
+                        Directory.CreateDirectory(folderPath);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.ToString());
+                }
             }
         }
     }

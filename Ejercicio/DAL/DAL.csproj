@@ -41,10 +41,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CLASS\Message.cs" />
+    <Compile Include="DATABASE\DataBaseContent.cs" />
+    <Compile Include="DATABASE\Message.cs" />
+    <Compile Include="DATABASE\StoredProcedures.cs" />
+    <Compile Include="DATABASE\TablesDataBase.cs" />
     <Compile Include="DAO\ConsoleLogDAO.cs" />
     <Compile Include="DAO\FileLogDAO.cs" />
     <Compile Include="DAO\SqlLogDAO.cs" />
+    <Compile Include="DTO\BDConnectionStringDTO.cs" />
     <Compile Include="DTO\LogConsoleTypeDTO.cs" />
     <Compile Include="DTO\LogMessageDTO.cs" />
     <Compile Include="DTO\LoggerTypeDTO.cs" />

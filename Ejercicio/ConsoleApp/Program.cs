@@ -17,6 +17,8 @@ namespace ConsoleApp
         static LogConsoleTypeDTO LogConsoleTypeDTO = new LogConsoleTypeDTO();
         static LoggerTypeDTO LoggerTypeDTO = new LoggerTypeDTO();
         static LogMessageDTO LogMessageDTO = new LogMessageDTO();
+        static BDConnectionStringDTO BD = new BDConnectionStringDTO();
+        static bool Accepted = true;
         #endregion
         static void Main(string[] args)
         {
@@ -31,7 +33,6 @@ namespace ConsoleApp
 
                 // Ask the user to what gets logged
                 Console.WriteLine("Please... Select a option avalible : 0, 1, 2 or 3");
-                Console.WriteLine("0: Next");
                 Console.WriteLine("1: Add Message");
                 Console.WriteLine("2: Add Warning ");
                 Console.WriteLine("3: Add Error");
@@ -62,11 +63,11 @@ namespace ConsoleApp
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Accepted = false;
                 }
                 #endregion
                 // Ask the user how to register.
                 Console.WriteLine("Please... Select an option to record the available message: 0, 1, 2 or 3");
-                Console.WriteLine("0: Exit");
                 Console.WriteLine("1: with .txt");
                 Console.WriteLine("2: with Console ");
                 Console.WriteLine("3: with  SQL Server");
@@ -74,6 +75,18 @@ namespace ConsoleApp
                 try
                 {
                     TypeAvalible = Convert.ToInt32(Console.ReadLine());
+                    if (TypeAvalible == 3)
+                    {
+                        Console.WriteLine("Fill The Name Server...");
+                        BD.Server = Console.ReadLine();
+                        Console.WriteLine("Fill The Name Data Base...");
+                        BD.DataBasename = Console.ReadLine();
+                        Console.WriteLine("Fill The User Name...");
+                        BD.UserName = Console.ReadLine();
+                        Console.WriteLine("Fill The Password...");
+                        BD.Password = Console.ReadLine();
+                    }
+
                     switch (TypeAvalible)
                     {
                         case 1:
@@ -92,24 +105,34 @@ namespace ConsoleApp
                             LoggerTypeDTO.logToDatabase = true;
                             break;
                     }
+
                 }
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.Message);
+                    Accepted = false;
                 }
                 #endregion
-                LoggerTypeDTO.logMessage = message;
-                LoggerTypeDTO.logWarning = warning;
-                LoggerTypeDTO.logError = error;
-                LoggerTypeDTO.dbParams = dbParamsMap;
-                LogMessageDTO.MessageText = messageTetx;
-                LogConsoleTypeDTO.Message = message;
-                LogConsoleTypeDTO.Error = error;
-                LogConsoleTypeDTO.Warning = warning;
 
-                ValidateMessageBLL.ParamsLogMessage(messageTetx, message, error, warning, LoggerTypeDTO);
-                LoggerService lg = new LoggerService();
-                lg.LogService(LoggerTypeDTO, LogMessageDTO, LogConsoleTypeDTO, dbParamsMap);
+                if (Accepted)
+                {
+                    LoggerTypeDTO.logMessage = message;
+                    LoggerTypeDTO.logWarning = warning;
+                    LoggerTypeDTO.logError = error;
+                    LoggerTypeDTO.dbParams = dbParamsMap;
+                    LogMessageDTO.MessageText = messageTetx;
+                    LogConsoleTypeDTO.Message = message;
+                    LogConsoleTypeDTO.Error = error;
+                    LogConsoleTypeDTO.Warning = warning;
+
+                    ValidateMessageBLL.ParamsLogMessage(messageTetx, message, error, warning, LoggerTypeDTO);
+                    LoggerService lg = new LoggerService();
+                    lg.LogService(LoggerTypeDTO, LogMessageDTO, LogConsoleTypeDTO, dbParamsMap, BD);
+                }
+                else
+                {
+                    Console.WriteLine("The values ​​you entered are not valid. Try Again");
+                }
             } while (OptionAvalible != 0 && TypeAvalible != 0);
         }
     }
